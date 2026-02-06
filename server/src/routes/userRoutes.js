@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { registerPrompt, getConversation, listOllamaModels } = require('../controllers/chatController');
+const { userLogin, profileInfo, ping } = require('../controllers/userController');
 
 /**
  * @swagger
@@ -75,5 +75,16 @@ const { registerPrompt, getConversation, listOllamaModels } = require('../contro
  *         description: Error al recuperar models
  */
 // router.get('/models', listOllamaModels);
+
+
+router.get('/ping', ping);
+
+
+router.post('/login', userLogin);
+
+router.get('/perfil', profileInfo);
+
+
+// router.post('/testtoken', testToken);
 
 module.exports = router;

@@ -15,7 +15,7 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerSpecs = require('./src/config/swagger');
 const { sequelize } = require('./src/config/database');
 const errorHandler = require('./src/middleware/errorHandler');
-const chatRoutes = require('./src/routes/chatRoutes');
+const userRoutes = require('./src/routes/userRoutes');
 const { logger, expressLogger } = require('./src/config/logger');
 
 // Crear instància d'Express
@@ -25,9 +25,11 @@ const app = express();
  * Configuració dels middlewares principals
  * - CORS per permetre peticions des d'altres dominis
  * - Parser de JSON per processar el cos de les peticions
+ * - Parser de URL-encoded per form-data
  */
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Configuració de Swagger per la documentació de l'API
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
@@ -51,7 +53,7 @@ app.use((req, res, next) => {
 app.use(expressLogger);
 
 // Registre de les rutes principals
-app.use('/api/chat', chatRoutes);
+app.use('/api/admin/usuaris', userRoutes);
 
 // Gestió centralitzada d'errors
 app.use(errorHandler);
@@ -79,6 +81,7 @@ async function startServer() {
         await sequelize.sync({
             // No fa res si la taula ja existeix
             force: false,  // Valor per defecte, segur per producció
+            alter: true, // modificar la estructura sin borrar datos
         
             // Elimina i recrea totes les taules cada vegada (PERILLÓS!)
             // force: true,   // Útil per development/testing, MAI per producció

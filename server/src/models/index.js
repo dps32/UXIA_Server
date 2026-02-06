@@ -1,9 +1,11 @@
 const User = require('./User');
+const Request = require('./Request');
 
-// Definim les relacions aquí, un cop tots els models estan carregats
-// Conversation.hasMany(Prompt, { foreignKey: 'ConversationId', onDelete: 'CASCADE' });
-// Prompt.belongsTo(Conversation, { foreignKey: 'ConversationId' });
+// Relacion 1 user N requests
+User.hasMany(Request, { foreignKey: 'userId', onDelete: 'CASCADE' });
+Request.belongsTo(User, { foreignKey: 'userId' });
 
 module.exports = {
-    User
+    User,
+    Request
 };
