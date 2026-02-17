@@ -16,6 +16,7 @@ const swaggerSpecs = require('./src/config/swagger');
 const { sequelize } = require('./src/config/database');
 const errorHandler = require('./src/middleware/errorHandler');
 const userRoutes = require('./src/routes/userRoutes');
+const imageRoutes = require('./src/routes/imageRoutes');
 const { logger, expressLogger } = require('./src/config/logger');
 
 // Crear instància d'Express
@@ -28,8 +29,8 @@ const app = express();
  * - Parser de URL-encoded per form-data
  */
 app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // Configuració de Swagger per la documentació de l'API
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
@@ -54,6 +55,7 @@ app.use(expressLogger);
 
 // Registre de les rutes principals
 app.use('/api/admin/usuaris', userRoutes);
+app.use('/api/analitzar-imatge', imageRoutes);
 
 // Gestió centralitzada d'errors
 app.use(errorHandler);

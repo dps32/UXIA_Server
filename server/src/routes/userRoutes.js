@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { userLogin, profileInfo, ping } = require('../controllers/userController');
+const { userLogin, profileInfo, addUser, modifyUser, deleteUser, listUsers, userLogout, ping } = require('../controllers/userController');
 
 /**
  * @swagger
@@ -82,7 +82,17 @@ router.get('/ping', ping);
 
 router.post('/login', userLogin);
 
+router.post('/logout', userLogout);
+
 router.get('/perfil', profileInfo);
+
+router.post('/addUser', addUser);
+
+router.post('/modifyUser', modifyUser);
+
+router.post('/deleteUser', deleteUser);
+
+router.get('/listUsers', listUsers);
 
 
 // router.post('/testtoken', testToken);

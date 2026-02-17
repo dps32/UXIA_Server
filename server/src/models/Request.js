@@ -12,7 +12,7 @@ const Request = sequelize.define('Request', {
         allowNull: false
     },
     response: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false
     },
     image: {
