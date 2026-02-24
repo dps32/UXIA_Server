@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { analyzeImage } = require('../controllers/imageController');
+const { analyzeImage, getTags } = require('../controllers/imageController');
 const { authToken } = require('../middleware/auth');
 
 /**
@@ -68,10 +68,43 @@ const { authToken } = require('../middleware/auth');
  *       400:
  *         description: Dades invàlides
  *       401:
- *         description: Token d'autenticació invàlid o absent
+ *         description: Token d'autenticació invàlid
  *       500:
  *         description: Error processant la imatge
  */
-router.post('/', authToken, analyzeImage);
+router.post('/analitzar-imatge', authToken, analyzeImage);
+
+/**
+ * @swagger
+ * /api/getTags:
+ *   get:
+ *     summary: Obtenir estadístiques dels tags generats en els anàlisis d'imatges
+ *     tags: [Imatges]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Estadístiques de tags
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   name:
+ *                     type: string
+ *                     description: Nom del tag
+ *                     example: cotxe
+ *                   count:
+ *                     type: integer
+ *                     description: Nombre de vegades que s'ha utilitzat el tag
+ *                     example: 15
+ *       401:
+ *         description: No autenticat o no és administrador
+ *       403:
+ *         description: Access Denied
+ */
+router.get('/getTags', getTags);
 
 module.exports = router;

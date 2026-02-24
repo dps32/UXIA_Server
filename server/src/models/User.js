@@ -25,6 +25,11 @@ const User = sequelize.define('User', {
         type: DataTypes.STRING,
         allowNull: true
     },
+    verificationCode: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: null
+    },
     isAdmin: {
         type: DataTypes.BOOLEAN,
         defaultValue: false

@@ -17,6 +17,7 @@ const { sequelize } = require('./src/config/database');
 const errorHandler = require('./src/middleware/errorHandler');
 const userRoutes = require('./src/routes/userRoutes');
 const imageRoutes = require('./src/routes/imageRoutes');
+const registrationRoutes = require('./src/routes/registrationRoutes');
 const { logger, expressLogger } = require('./src/config/logger');
 
 // Crear instància d'Express
@@ -55,7 +56,8 @@ app.use(expressLogger);
 
 // Registre de les rutes principals
 app.use('/api/admin/usuaris', userRoutes);
-app.use('/api/analitzar-imatge', imageRoutes);
+app.use('/api', imageRoutes);
+app.use('/api/usuaris', registrationRoutes);
 
 // Gestió centralitzada d'errors
 app.use(errorHandler);
@@ -83,7 +85,7 @@ async function startServer() {
         await sequelize.sync({
             // No fa res si la taula ja existeix
             force: false,  // Valor per defecte, segur per producció
-            alter: true, // modificar la estructura sin borrar datos
+            alter: false, // modificar la estructura sin borrar datos
         
             // Elimina i recrea totes les taules cada vegada (PERILLÓS!)
             // force: true,   // Útil per development/testing, MAI per producció
